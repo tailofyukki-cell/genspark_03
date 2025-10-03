@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🗡️ 異世界転生職業診断 ⚔️ | あなたの転生職業は？</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="あなたが異世界に転生したらどんな職業になる？勇者、魔法使い、村人、魔王のペット、SEの中から診断！50個の面白い質問で運命を占おう！">
+    <meta name="keywords" content="異世界転生,診断,職業,バズり,面白い,勇者,魔法使い,村人,魔王,SE,診断アプリ">
+    <meta name="author" content="異世界転生職業診断">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="🗡️ 異世界転生職業診断 ⚔️">
+    <meta property="og:description" content="あなたの異世界転生職業を診断！勇者？魔法使い？それとも...？">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://cdn1.genspark.ai/user-upload-image/3_generated/8b5dea1e-c938-463a-b6f6-79f4cc8ebcf6">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="🗡️ 異世界転生職業診断 ⚔️">
+    <meta name="twitter:description" content="あなたの異世界転生職業を診断！">
+    <meta name="twitter:image" content="https://cdn1.genspark.ai/user-upload-image/3_generated/8b5dea1e-c938-463a-b6f6-79f4cc8ebcf6">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚔️</text></svg>">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="転生診断">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%23667eea%22/><text x=%2250%22 y=%2265%22 text-anchor=%22middle%22 font-size=%2240%22 fill=%22white%22>⚔️</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .title {
+            font-size: 2.5em;
+            color: #4a5568;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .start-screen, .quiz-screen, .result-screen {
+            text-align: center;
+        }
+        
+        .question-container {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(240, 147, 251, 0.3);
+        }
+        
+        .question {
+            font-size: 1.3em;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .option {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 1);
+        }
+        
+        .option.hero { background: linear-gradient(135deg, #ffeaa7, #fab1a0); }
+        .option.mage { background: linear-gradient(135deg, #a29bfe, #6c5ce7); color: white; }
+        .option.villager { background: linear-gradient(135deg, #55efc4, #00b894); }
+        .option.pet { background: linear-gradient(135deg, #fd79a8, #e84393); color: white; }
+        .option.se { background: linear-gradient(135deg, #636e72, #2d3436); color: white; }
+        
+        .progress {
+            background: #e0e6ed;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            transition: width 0.3s ease;
+            border-radius: 5px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+        }
+        
+        .result-title {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .result-description {
+            font-size: 1.3em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .result-image {
+            width: 300px;
+            height: 300px;
+            border-radius: 15px;
+            margin: 20px auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            object-fit: cover;
+        }
+        
+        .share-btns {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .share-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        
+        .share-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .twitter-btn {
+            background: #1da1f2;
+            color: white;
+        }
+        
+        .restart-btn {
+            background: #28a745;
+            color: white;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .question-number {
+            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🗡️ 異世界転生職業診断 ⚔️</h1>
+            <p class="subtitle">あなたが異世界に転生したら、どんな職業になる？</p>
+        </div>
+        
+        <!-- スタート画面 -->
+        <div id="start-screen" class="start-screen">
+            <div style="font-size: 4em; margin-bottom: 20px;">✨🌟⭐</div>
+            <p style="font-size: 1.3em; margin-bottom: 30px; line-height: 1.6;">
+                異世界転生の世界へようこそ！<br>
+                この診断では、10個の質問に答えることで<br>
+                あなたの異世界での職業が判明します！<br><br>
+                果たしてあなたは勇者？魔法使い？それとも...？
+            </p>
+            <button class="btn" onclick="startQuiz()">診断スタート！ 🚀</button>
+        </div>
+        
+        <!-- クイズ画面 -->
+        <div id="quiz-screen" class="quiz-screen hidden">
+            <div class="progress">
+                <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+            </div>
+            
+            <div id="question-container" class="question-container">
+                <div id="question-number" class="question-number"></div>
+                <div id="question" class="question"></div>
+                <div id="options" class="options"></div>
+            </div>
+        </div>
+        
+        <!-- ローディング画面 -->
+        <div id="loading-screen" class="loading hidden">
+            <div class="spinner"></div>
+            <h3>異世界転生中...</h3>
+            <p>あなたの運命を決定しています...</p>
+        </div>
+        
+        <!-- 結果画面 -->
+        <div id="result-screen" class="result-screen hidden">
+            <div id="result-card" class="result-card">
+                <h2 id="result-title" class="result-title"></h2>
+                <p id="result-description" class="result-description"></p>
+                <img id="result-image" class="result-image" alt="転生後の姿">
+            </div>
+            
+            <div class="share-btns">
+                <button class="share-btn twitter-btn" onclick="shareToTwitter()">
+                    🐦 Xでシェア
+                </button>
+                <button class="share-btn restart-btn" onclick="restartQuiz()">
+                    🔄 もう一度診断
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全50問の質問データ
+        const allQuestions = [
+            // 戦闘・能力系 (17問)
+            {
+                question: "突然モンスターに襲われた！あなたの対処法は？",
+                options: [
+                    { text: "光の剣で一刀両断！", type: "hero" },
+                    { text: "高威力魔法で一掃！", type: "mage" },
+                    { text: "とりあえず隠れる", type: "villager" },
+                    { text: "「にゃーん」と鳴いて可愛さアピール", type: "pet" },
+                    { text: "モンスターのAIをハッキング", type: "se" }
+                ]
+            },
+            {
+                question: "理想のチート能力は？",
+                options: [
+                    { text: "無敵の聖なる力", type: "hero" },
+                    { text: "全属性魔法マスター", type: "mage" },
+                    { text: "目立たない透明化", type: "villager" },
+                    { text: "みんなをワンワンさせる魅力", type: "pet" },
+                    { text: "システム管理者権限", type: "se" }
+                ]
+            },
+            {
+                question: "戦闘で重要なのは？",
+                options: [
+                    { text: "仲間との連携", type: "hero" },
+                    { text: "詠唱の完璧さ", type: "mage" },
+                    { text: "戦わずに済む方法", type: "villager" },
+                    { text: "相手を油断させること", type: "pet" },
+                    { text: "バグの無い戦闘システム", type: "se" }
+                ]
+            },
+            {
+                question: "最強の武器といえば？",
+                options: [
+                    { text: "伝説の聖剣", type: "hero" },
+                    { text: "古代の魔導書", type: "mage" },
+                    { text: "普通の農具（実は最強）", type: "villager" },
+                    { text: "可愛い見た目（最大の武器）", type: "pet" },
+                    { text: "デバッグ用チートコード", type: "se" }
+                ]
+            },
+            {
+                question: "必殺技の名前を叫ぶとしたら？",
+                options: [
+                    { text: "「聖なる光よ！」", type: "hero" },
+                    { text: "「我が魔力よ、炸裂せよ！」", type: "mage" },
+                    { text: "「...」（無言）", type: "villager" },
+                    { text: "「にゃーん♪（威圧）」", type: "pet" },
+                    { text: "「sudo rm -rf /敵/*」", type: "se" }
+                ]
+            },
+            {
+                question: "レベルアップした時の気分は？",
+                options: [
+                    { text: "みんなのために頑張るぞ！", type: "hero" },
+                    { text: "新しい魔法を覚えたい！", type: "mage" },
+                    { text: "あまり目立ちたくない...", type: "villager" },
+                    { text: "ご褒美のおやつはどこ？", type: "pet" },
+                    { text: "スキルポイントの配分を最適化", type: "se" }
+                ]
+            },
+            {
+                question: "パーティーでの役割は？",
+                options: [
+                    { text: "前線で盾役", type: "hero" },
+                    { text: "後方からの火力支援", type: "mage" },
+                    { text: "荷物持ちと雑用", type: "villager" },
+                    { text: "マスコット兼ムードメーカー", type: "pet" },
+                    { text: "装備の管理とメンテナンス", type: "se" }
+                ]
+            },
+            {
+                question: "ダンジョンで迷子になったら？",
+                options: [
+                    { text: "勇気を出して突き進む！", type: "hero" },
+                    { text: "魔法で道を照らす", type: "mage" },
+                    { text: "来た道を戻る", type: "villager" },
+                    { text: "誰かが迎えに来てくれるまで待つ", type: "pet" },
+                    { text: "マップデータをハッキング", type: "se" }
+                ]
+            },
+            {
+                question: "敵の弱点を見つけたら？",
+                options: [
+                    { text: "正々堂々と戦う", type: "hero" },
+                    { text: "弱点属性の魔法で攻撃", type: "mage" },
+                    { text: "こっそりメモを取る", type: "villager" },
+                    { text: "「ここが急所だよ〜」と教える", type: "pet" },
+                    { text: "データベースに記録", type: "se" }
+                ]
+            },
+            {
+                question: "魔王城に潜入する方法は？",
+                options: [
+                    { text: "正面から堂々と", type: "hero" },
+                    { text: "隠密魔法で忍び込む", type: "mage" },
+                    { text: "使用人として紛れ込む", type: "villager" },
+                    { text: "ペットのフリして入る", type: "pet" },
+                    { text: "セキュリティシステムを無効化", type: "se" }
+                ]
+            },
+            {
+                question: "異世界の言語がわからない時は？",
+                options: [
+                    { text: "勇者らしく身振り手振り", type: "hero" },
+                    { text: "翻訳魔法を使う", type: "mage" },
+                    { text: "何となく雰囲気で理解", type: "villager" },
+                    { text: "可愛く鳴いて意思疎通", type: "pet" },
+                    { text: "言語パックをインストール", type: "se" }
+                ]
+            },
+            {
+                question: "伝説の装備を見つけたら？",
+                options: [
+                    { text: "正義のために使う", type: "hero" },
+                    { text: "魔法の研究に活用", type: "mage" },
+                    { text: "誰かに譲る", type: "villager" },
+                    { text: "首輪の代わりに装着", type: "pet" },
+                    { text: "装備のデータを解析", type: "se" }
+                ]
+            },
+            {
+                question: "異世界の技術を見たら？",
+                options: [
+                    { text: "正義のために活用", type: "hero" },
+                    { text: "魔法との融合を研究", type: "mage" },
+                    { text: "静かに観察", type: "villager" },
+                    { text: "おもちゃとして遊ぶ", type: "pet" },
+                    { text: "コードを解読して改良", type: "se" }
+                ]
+            },
+            {
+                question: "新しいスキルを覚える方法は？",
+                options: [
+                    { text: "師匠に弟子入り", type: "hero" },
+                    { text: "古い魔導書で独学", type: "mage" },
+                    { text: "見よう見まね", type: "villager" },
+                    { text: "遊びながら自然に", type: "pet" },
+                    { text: "スキルマニュアルを熟読", type: "se" }
+                ]
+            },
+            {
+                question: "ピンチの時の心境は？",
+                options: [
+                    { text: "みんなを守らなければ！", type: "hero" },
+                    { text: "この魔法が決まれば...！", type: "mage" },
+                    { text: "なんとかなるさ", type: "villager" },
+                    { text: "誰か助けて〜", type: "pet" },
+                    { text: "バックアップから復旧可能", type: "se" }
+                ]
+            },
+            {
+                question: "異世界の食べ物を見つけたら？",
+                options: [
+                    { text: "勇気を出して食べてみる", type: "hero" },
+                    { text: "毒性を魔法で鑑定", type: "mage" },
+                    { text: "他の人が食べるのを見てから", type: "villager" },
+                    { text: "匂いを嗅いで判断", type: "pet" },
+                    { text: "成分をスキャンして分析", type: "se" }
+                ]
+            },
+            {
+                question: "異世界の通貨システムは？",
+                options: [
+                    { text: "正義の報酬として受け取る", type: "hero" },
+                    { text: "魔法の材料代に使う", type: "mage" },
+                    { text: "生活費として大切に", type: "villager" },
+                    { text: "おもちゃだと思ってる", type: "pet" },
+                    { text: "経済システムを解析", type: "se" }
+                ]
+            },
+            
+            // 性格・価値観系 (17問)
+            {
+                question: "異世界転生の第一目標は？",
+                options: [
+                    { text: "世界を救う", type: "hero" },
+                    { text: "最強の魔法使いになる", type: "mage" },
+                    { text: "平和に暮らす", type: "villager" },
+                    { text: "最高のご主人を見つける", type: "pet" },
+                    { text: "この世界のシステムを理解する", type: "se" }
+                ]
+            },
+            {
+                question: "友達を作るには？",
+                options: [
+                    { text: "困っている人を助ける", type: "hero" },
+                    { text: "魔法を教えてあげる", type: "mage" },
+                    { text: "自然に仲良くなる", type: "villager" },
+                    { text: "可愛さでみんなのハートを鷲掴み", type: "pet" },
+                    { text: "共通の課題解決で協力", type: "se" }
+                ]
+            },
+            {
+                question: "理想の住まいは？",
+                options: [
+                    { text: "みんなが集まる明るい家", type: "hero" },
+                    { text: "魔法研究に最適な塔", type: "mage" },
+                    { text: "小さくても平和な家", type: "villager" },
+                    { text: "ご主人の膝の上", type: "pet" },
+                    { text: "高性能な設備が整ったオフィス", type: "se" }
+                ]
+            },
+            {
+                question: "お金の使い道は？",
+                options: [
+                    { text: "仲間のための装備", type: "hero" },
+                    { text: "魔法の研究費", type: "mage" },
+                    { text: "日々の生活費", type: "villager" },
+                    { text: "美味しいおやつ", type: "pet" },
+                    { text: "システム改善のための機材", type: "se" }
+                ]
+            },
+            {
+                question: "失敗した時の対応は？",
+                options: [
+                    { text: "次は絶対成功させる！", type: "hero" },
+                    { text: "研究して原因を突き止める", type: "mage" },
+                    { text: "まあ、そんな日もある", type: "villager" },
+                    { text: "可愛くお詫び", type: "pet" },
+                    { text: "ログを解析してバグを修正", type: "se" }
+                ]
+            },
+            {
+                question: "異世界での趣味は？",
+                options: [
+                    { text: "正義の修行", type: "hero" },
+                    { text: "新しい魔法の開発", type: "mage" },
+                    { text: "のんびり散歩", type: "villager" },
+                    { text: "昼寝とおやつ", type: "pet" },
+                    { text: "システムの最適化", type: "se" }
+                ]
+            },
+            {
+                question: "異世界での悩みといえば？",
+                options: [
+                    { text: "責任が重すぎる", type: "hero" },
+                    { text: "魔法以外ができない", type: "mage" },
+                    { text: "特に悩みはない", type: "villager" },
+                    { text: "おやつが足りない", type: "pet" },
+                    { text: "バグが多すぎる", type: "se" }
+                ]
+            },
+            {
+                question: "理想の一日は？",
+                options: [
+                    { text: "朝から晩まで正義の活動", type: "hero" },
+                    { text: "一日中魔法の研究", type: "mage" },
+                    { text: "のんびりした日常", type: "villager" },
+                    { text: "ご主人とまったり過ごす", type: "pet" },
+                    { text: "効率的にタスクをこなす", type: "se" }
+                ]
+            },
+            {
+                question: "ストレス発散方法は？",
+                options: [
+                    { text: "正義の修行", type: "hero" },
+                    { text: "爆裂魔法の練習", type: "mage" },
+                    { text: "美味しいものを食べる", type: "villager" },
+                    { text: "思いっきり甘える", type: "pet" },
+                    { text: "コードのリファクタリング", type: "se" }
+                ]
+            },
+            {
+                question: "異世界での目標は？",
+                options: [
+                    { text: "世界平和の実現", type: "hero" },
+                    { text: "魔法の極意を極める", type: "mage" },
+                    { text: "今日を無事に過ごす", type: "villager" },
+                    { text: "永遠の愛を手に入れる", type: "pet" },
+                    { text: "完璧なシステムを構築", type: "se" }
+                ]
+            },
+            {
+                question: "異世界の法律について",
+                options: [
+                    { text: "正義を守るために従う", type: "hero" },
+                    { text: "魔法研究の妨げにならない程度に", type: "mage" },
+                    { text: "普通に守る", type: "villager" },
+                    { text: "可愛いから許してもらえる", type: "pet" },
+                    { text: "ルールのバグを見つけて報告", type: "se" }
+                ]
+            },
+            {
+                question: "異世界の恋愛事情は？",
+                options: [
+                    { text: "正義のために恋愛は後回し", type: "hero" },
+                    { text: "魔法の研究が忙しくて...", type: "mage" },
+                    { text: "いつか素敵な人と", type: "villager" },
+                    { text: "ご主人が一番！", type: "pet" },
+                    { text: "恋愛アルゴリズムを研究中", type: "se" }
+                ]
+            },
+            {
+                question: "異世界の教育制度は？",
+                options: [
+                    { text: "みんなが正義を学べるように", type: "hero" },
+                    { text: "魔法教育の充実を", type: "mage" },
+                    { text: "普通の教育で十分", type: "villager" },
+                    { text: "しつけは愛情で", type: "pet" },
+                    { text: "効率的な学習システムを導入", type: "se" }
+                ]
+            },
+            {
+                question: "異世界のSNSがあったら？",
+                options: [
+                    { text: "正義の情報発信", type: "hero" },
+                    { text: "魔法のレシピをシェア", type: "mage" },
+                    { text: "日常の写真を投稿", type: "villager" },
+                    { text: "可愛い写真でいいねを稼ぐ", type: "pet" },
+                    { text: "システムの脆弱性をチェック", type: "se" }
+                ]
+            },
+            {
+                question: "異世界での健康管理は？",
+                options: [
+                    { text: "正義の修行で体を鍛える", type: "hero" },
+                    { text: "魔法で体調管理", type: "mage" },
+                    { text: "規則正しい生活", type: "villager" },
+                    { text: "たくさん食べてたくさん寝る", type: "pet" },
+                    { text: "データで健康状態を管理", type: "se" }
+                ]
+            },
+            {
+                question: "異世界のお祭りでは？",
+                options: [
+                    { text: "みんなのために警備", type: "hero" },
+                    { text: "魔法で花火を演出", type: "mage" },
+                    { text: "屋台で美味しいものを", type: "villager" },
+                    { text: "みんなの注目を独占", type: "pet" },
+                    { text: "イベント運営システムを最適化", type: "se" }
+                ]
+            },
+            {
+                question: "老後の異世界ライフは？",
+                options: [
+                    { text: "伝説として語り継がれる", type: "hero" },
+                    { text: "魔法の研究を続ける", type: "mage" },
+                    { text: "平凡だけど幸せな日々", type: "villager" },
+                    { text: "みんなに愛され続ける", type: "pet" },
+                    { text: "システムの保守・運用", type: "se" }
+                ]
+            },
+            
+            // ライフスタイル・文化系 (16問)
+            {
+                question: "異世界グルメといえば？",
+                options: [
+                    { text: "栄養満点の勇者弁当", type: "hero" },
+                    { text: "魔力回復ポーション", type: "mage" },
+                    { text: "家庭的な手作り料理", type: "villager" },
+                    { text: "高級なペット用おやつ", type: "pet" },
+                    { text: "栄養バランス最適化食品", type: "se" }
+                ]
+            },
+            {
+                question: "異世界ファッションは？",
+                options: [
+                    { text: "光り輝く勇者の装備", type: "hero" },
+                    { text: "神秘的なローブ", type: "mage" },
+                    { text: "動きやすい普段着", type: "villager" },
+                    { text: "可愛いリボンと首輪", type: "pet" },
+                    { text: "機能性重視の作業着", type: "se" }
+                ]
+            },
+            {
+                question: "異世界の交通手段は？",
+                options: [
+                    { text: "神速の聖なる馬", type: "hero" },
+                    { text: "空飛ぶ魔法のほうき", type: "mage" },
+                    { text: "のんびり徒歩", type: "villager" },
+                    { text: "ご主人に抱っこしてもらう", type: "pet" },
+                    { text: "最適化された転送システム", type: "se" }
+                ]
+            },
+            {
+                question: "異世界の音楽は？",
+                options: [
+                    { text: "勇ましい行進曲", type: "hero" },
+                    { text: "神秘的な魔法の調べ", type: "mage" },
+                    { text: "心安らぐ民謡", type: "villager" },
+                    { text: "可愛いアニソン", type: "pet" },
+                    { text: "電子音楽", type: "se" }
+                ]
+            },
+            {
+                question: "異世界の娯楽は？",
+                options: [
+                    { text: "正義のための冒険", type: "hero" },
+                    { text: "魔法実験", type: "mage" },
+                    { text: "のんびりした散歩", type: "villager" },
+                    { text: "ボール遊び", type: "pet" },
+                    { text: "システム開発", type: "se" }
+                ]
+            },
+            {
+                question: "異世界の図書館では？",
+                options: [
+                    { text: "英雄譚を読み耽る", type: "hero" },
+                    { text: "古代魔法書を研究", type: "mage" },
+                    { text: "料理本をチェック", type: "villager" },
+                    { text: "絵本の挿絵を見る", type: "pet" },
+                    { text: "技術文書を熟読", type: "se" }
+                ]
+            },
+            {
+                question: "異世界のお風呂事情は？",
+                options: [
+                    { text: "みんなで大きなお風呂", type: "hero" },
+                    { text: "魔法で湯温調整", type: "mage" },
+                    { text: "普通にのんびり", type: "villager" },
+                    { text: "お風呂は苦手...", type: "pet" },
+                    { text: "最適な入浴時間を計算", type: "se" }
+                ]
+            },
+            {
+                question: "異世界のお買い物は？",
+                options: [
+                    { text: "装備店で武器を物色", type: "hero" },
+                    { text: "魔法素材のお店巡り", type: "mage" },
+                    { text: "市場で日用品を", type: "villager" },
+                    { text: "おもちゃ屋さんが好き", type: "pet" },
+                    { text: "オンラインで効率的に", type: "se" }
+                ]
+            },
+            {
+                question: "異世界の季節の楽しみは？",
+                options: [
+                    { text: "季節ごとの冒険", type: "hero" },
+                    { text: "季節魔法の研究", type: "mage" },
+                    { text: "季節の美味しいもの", type: "villager" },
+                    { text: "季節の昼寝スポット探し", type: "pet" },
+                    { text: "季節データの収集", type: "se" }
+                ]
+            },
+            {
+                question: "異世界の記念日は？",
+                options: [
+                    { text: "世界を救った日", type: "hero" },
+                    { text: "新魔法を開発した日", type: "mage" },
+                    { text: "穏やかに過ごした日", type: "villager" },
+                    { text: "ご主人に出会った日", type: "pet" },
+                    { text: "システムが完成した日", type: "se" }
+                ]
+            },
+            {
+                question: "異世界の夜の過ごし方は？",
+                options: [
+                    { text: "明日への決意を新たに", type: "hero" },
+                    { text: "星座から魔法力を吸収", type: "mage" },
+                    { text: "早く寝て早く起きる", type: "villager" },
+                    { text: "ご主人と一緒にぐっすり", type: "pet" },
+                    { text: "夜間バッチ処理の監視", type: "se" }
+                ]
+            },
+            {
+                question: "異世界の掃除の仕方は？",
+                options: [
+                    { text: "みんなで協力して", type: "hero" },
+                    { text: "清浄魔法で一瞬で", type: "mage" },
+                    { text: "コツコツ丁寧に", type: "villager" },
+                    { text: "足跡を付けながら歩き回る", type: "pet" },
+                    { text: "自動清掃システムを導入", type: "se" }
+                ]
+            },
+            {
+                question: "異世界の天気予報は？",
+                options: [
+                    { text: "勇者の直感で予測", type: "hero" },
+                    { text: "占星術で天候を読む", type: "mage" },
+                    { text: "雲の様子を見て判断", type: "villager" },
+                    { text: "鼻がムズムズしたら雨", type: "pet" },
+                    { text: "気象データを解析", type: "se" }
+                ]
+            },
+            {
+                question: "異世界の手紙の書き方は？",
+                options: [
+                    { text: "勇ましく力強い文字で", type: "hero" },
+                    { text: "魔法の文字で神秘的に", type: "mage" },
+                    { text: "丁寧で読みやすく", type: "villager" },
+                    { text: "絵文字だらけ", type: "pet" },
+                    { text: "マークダウン形式で", type: "se" }
+                ]
+            },
+            {
+                question: "異世界の時間の使い方は？",
+                options: [
+                    { text: "正義のために全力投球", type: "hero" },
+                    { text: "魔法研究に没頭", type: "mage" },
+                    { text: "ゆったりと過ごす", type: "villager" },
+                    { text: "遊び中心の生活", type: "pet" },
+                    { text: "効率を最大化", type: "se" }
+                ]
+            },
+            {
+                question: "異世界での最高の瞬間は？",
+                options: [
+                    { text: "仲間と共に勝利した時", type: "hero" },
+                    { text: "完璧な魔法が成功した時", type: "mage" },
+                    { text: "平凡な日常のひととき", type: "villager" },
+                    { text: "ご主人に褒められた時", type: "pet" },
+                    { text: "バグの無いシステムが動いた時", type: "se" }
+                ]
+            }
+        ];
+
+        // 結果データ
+        const results = {
+            hero: {
+                title: "🗡️ 勇者 🛡️",
+                description: "あなたは勇者として転生！光の剣を手に、仲間と共に世界を救う使命を背負います。チート能力は強力ですが、責任も重大...まさにブラック労働の代表格！でも世界を救う達成感は何物にも代えがたいはず！",
+                image: "https://cdn1.genspark.ai/user-upload-image/3_generated/8b5dea1e-c938-463a-b6f6-79f4cc8ebcf6"
+            },
+            mage: {
+                title: "🔮 魔法使い 📚",
+                description: "あなたは魔法使いとして転生！詠唱を極め、属性魔法をマスターして最強を目指します。ただし魔法以外はポンコツで、日常生活はかなり不便...でも決め技が決まった時の爽快感は最高！",
+                image: "https://cdn1.genspark.ai/user-upload-image/3_generated/a2591c9a-c327-43c6-b326-caec82510ce8"
+            },
+            villager: {
+                title: "🌾 村人 🏡",
+                description: "あなたは村人として転生！一見モブキャラに見えますが、実は隠された最強の力を秘めています。「おはよう」「こんにちは」の固定セリフの中に、深い哲学が込められているのかも...？",
+                image: "https://cdn1.genspark.ai/user-upload-image/3_generated/9075c303-3708-4eaa-a4fd-9a8bb0a604af"
+            },
+            pet: {
+                title: "🐾 魔王のペット 👑",
+                description: "あなたは魔王のペットとして転生！マスコット的な可愛さを持ちながら、実は口が悪くて毒舌家。でも魔王への忠誠心は人一倍で、実は最終ボス級の力を隠し持つ裏ボス的存在！",
+                image: "https://cdn1.genspark.ai/user-upload-image/3_generated/837a13fa-8bee-4335-8744-10aae5760b77"
+            },
+            se: {
+                title: "💻 システムエンジニア ⚙️",
+                description: "あなたは異世界でもSEとして転生！魔王城のセキュリティ担当として、日夜バグ修正に追われる運命に...勇者よりもハードな重労働が待っています。でも世界の裏側を支える重要な仕事！",
+                image: "https://cdn1.genspark.ai/user-upload-image/3_generated/c2667f61-f677-40ed-963f-aa6c8fcca100"
+            }
+        };
+
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let answers = { hero: 0, mage: 0, villager: 0, pet: 0, se: 0 };
+
+        function startQuiz() {
+            // 50問からランダムに10問選択
+            const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+            currentQuestions = shuffled.slice(0, 10);
+            
+            currentQuestionIndex = 0;
+            answers = { hero: 0, mage: 0, villager: 0, pet: 0, se: 0 };
+            
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = currentQuestions[currentQuestionIndex];
+            const progress = ((currentQuestionIndex) / currentQuestions.length) * 100;
+            
+            document.getElementById('progress-bar').style.width = progress + '%';
+            document.getElementById('question-number').textContent = `質問 ${currentQuestionIndex + 1} / ${currentQuestions.length}`;
+            document.getElementById('question').textContent = question.question;
+            
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = `option ${option.type}`;
+                button.textContent = option.text;
+                button.onclick = () => selectAnswer(option.type);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function selectAnswer(type) {
+            answers[type]++;
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex < currentQuestions.length) {
+                showQuestion();
+            } else {
+                showLoading();
+            }
+        }
+
+        function showLoading() {
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('loading-screen').classList.remove('hidden');
+            
+            // 2秒後に結果表示
+            setTimeout(() => {
+                showResult();
+            }, 2000);
+        }
+
+        function showResult() {
+            // 最も多い回答を求める
+            let maxType = 'villager';
+            let maxCount = 0;
+            
+            for (const [type, count] of Object.entries(answers)) {
+                if (count > maxCount) {
+                    maxCount = count;
+                    maxType = type;
+                }
+            }
+            
+            const result = results[maxType];
+            
+            document.getElementById('result-title').textContent = result.title;
+            document.getElementById('result-description').textContent = result.description;
+            document.getElementById('result-image').src = result.image;
+            document.getElementById('result-image').alt = result.title;
+            
+            document.getElementById('loading-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+        }
+
+        function shareToTwitter() {
+            const resultTitle = document.getElementById('result-title').textContent;
+            const text = `異世界転生職業診断の結果は「${resultTitle}」でした！\n\nあなたも診断してみる？ #異世界転生診断 #診断アプリ #バズりたい`;
+            const url = window.location.href;
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+            window.open(twitterUrl, '_blank');
+        }
+
+        function restartQuiz() {
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('hidden');
+        }
+        
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+        
+        // Google Analytics (replace GA_MEASUREMENT_ID with actual ID)
+        /*
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+        */
+    </script>
+</body>
+</html>
